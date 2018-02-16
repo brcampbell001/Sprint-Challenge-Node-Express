@@ -11,12 +11,13 @@ const PORT = 3030;
 
 server.use(bodyParser.json());
 
-const PREV_URL = 'https://api.coindesk.com/v1/bpi/historical/close.json?for=yesterday';
+const PAST_URL = 'https://api.coindesk.com/v1/bpi/historical/close.json?for=yesterday';
 const CURRENT_URL = 'https://api.coindesk.com/v1/bpi/currentprice/USD.json';
 
 
 /* Code start */
 
+/* Current Crypto Prices */
 server.get('/current', (req, res) => {
     const current = req.body.current;
     const urlCurr = CURRENT_URL;
@@ -34,6 +35,23 @@ server.get('/current', (req, res) => {
         })
 });
 
+/* Past Crypto Prices */
+server.get('/past', (req, res) => {
+    const past = req.body.past;
+    const urlPast = PAST_URL;
+    console.log(PAST_URL);
+    fetch(urlPast)
+        .then(past => past.json())
+        .then(past => {
+            console.log(past);
+            res.status(STATUS_OK);
+            res.json(past);
+        })
+        .catch(error => {
+            res.status(STATUS_USER_ERROR);
+            res.json({ error: error });
+        })
+})
 
 /*Code end */
 
